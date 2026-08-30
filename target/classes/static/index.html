@@ -1,89 +1,204 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CEN4802 Mini Task Tracker</title>
-    <link rel="stylesheet" href="style.css">
-</head>
-<body>
-<main class="container">
-    <h1>Mini Task Tracker</h1>
-    <p class="subtitle">A small Java web app for task creation</p>
 
-    <form id="task-form">
-        <label for="task-title">New task</label>
-        <div class="form-row">
-            <input id="task-title" maxlength="100" placeholder="Example: Create a task" required>
-            <button type="submit">Add</button>
-        </div>
+    <title>Mini Task Tracker</title>
+
+    <link rel="stylesheet" href="/style.css">
+</head>
+
+<body>
+
+<main class="container">
+
+    <h1>Mini Task Tracker</h1>
+
+    <p class="description">
+        Add tasks, mark them as completed, or remove them.
+    </p>
+
+    <form id="taskForm">
+
+        <input
+                id="taskInput"
+                type="text"
+                placeholder="Enter a task..."
+                autocomplete="off"
+        >
+
+        <button type="submit">
+            Add Task
+        </button>
+
     </form>
 
-    <p id="message" aria-live="polite"></p>
-    <ul id="task-list"></ul>
+    <ul id="taskList"></ul>
+
 </main>
 
 <script>
-    const taskForm = document.getElementById('task-form');
-    const taskTitle = document.getElementById('task-title');
-    const taskList = document.getElementById('task-list');
-    const message = document.getElementById('message');
+
+    const taskForm =
+        document.getElementById("taskForm");
+
+    const taskInput =
+        document.getElementById("taskInput");
+
+    const taskList =
+        document.getElementById("taskList");
+
 
     async function loadTasks() {
-        const response = await fetch('/api/tasks');
-        const tasks = await response.json();
 
-        taskList.innerHTML = '';
+        const response =
+            await fetch("/api/tasks");
+
+        const tasks =
+            await response.json();
+
+        displayTasks(tasks);
+    }
+
+
+    function displayTasks(tasks) {
+
+        taskList.innerHTML = "";
+
         for (const task of tasks) {
-            const item = document.createElement('li');
 
-            const title = document.createElement('span');
+            const listItem =
+                document.createElement("li");
+
+            if (task.completed) {
+                listItem.classList.add("completed");
+            }
+
+
+            const title =
+                document.createElement("span");
+
             title.textContent = task.title;
 
-            const deleteButton = document.createElement('button');
-            deleteButton.textContent = 'Delete';
-            deleteButton.className = 'delete-button';
-            deleteButton.addEventListener('click', () => deleteTask(task.id));
 
-            item.append(title, deleteButton);
-            taskList.appendChild(item);
-        }
+            const buttons =
+                document.createElement("div");
 
-        if (tasks.length === 0) {
-            const empty = document.createElement('li');
-            empty.className = 'empty';
-            empty.textContent = 'No tasks yet.';
-            taskList.appendChild(empty);
+            buttons.className = "buttons";
+
+
+            const completeButton =
+                document.createElement("button");
+
+            completeButton.className =
+                "complete-button";
+
+            completeButton.textContent =
+                task.completed
+                    ? "Undo"
+                    : "Complete";
+
+            completeButton.addEventListener(
+                "click",
+                async () => {
+
+                    await fetch(
+                        `/api/tasks/${task.id}/toggle`,
+                        {
+                            method: "POST"
+                        }
+                    );
+
+                    loadTasks();
+                }
+            );
+
+
+            const deleteButton =
+                document.createElement("button");
+
+            deleteButton.className =
+                "delete-button";
+
+            deleteButton.textContent =
+                "Delete";
+
+            deleteButton.addEventListener(
+                "click",
+                async () => {
+
+                    await fetch(
+                        `/api/tasks/${task.id}`,
+                        {
+                            method: "DELETE"
+                        }
+                    );
+
+                    loadTasks();
+                }
+            );
+
+
+            buttons.appendChild(
+                completeButton
+            );
+
+            buttons.appendChild(
+                deleteButton
+            );
+
+
+            listItem.appendChild(title);
+            listItem.appendChild(buttons);
+
+            taskList.appendChild(listItem);
         }
     }
 
-    async function addTask(event) {
-        event.preventDefault();
-        message.textContent = '';
 
-        const response = await fetch('/api/tasks', {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({title: taskTitle.value})
-        });
+    taskForm.addEventListener(
+        "submit",
+        async event => {
 
-        if (!response.ok) {
-            message.textContent = 'Could not add the task.';
-            return;
+            event.preventDefault();
+
+            const title =
+                taskInput.value.trim();
+
+            if (!title) {
+                return;
+            }
+
+
+            await fetch(
+                "/api/tasks",
+                {
+                    method: "POST",
+
+                    headers: {
+                        "Content-Type":
+                            "application/json"
+                    },
+
+                    body: JSON.stringify({
+                        title: title
+                    })
+                }
+            );
+
+
+            taskInput.value = "";
+
+            loadTasks();
         }
+    );
 
-        taskTitle.value = '';
-        taskTitle.focus();
-        await loadTasks();
-    }
 
-    async function deleteTask(id) {
-        await fetch(`/api/tasks/${id}`, {method: 'DELETE'});
-        await loadTasks();
-    }
-
-    taskForm.addEventListener('submit', addTask);
     loadTasks();
+
 </script>
+
 </body>
 </html>

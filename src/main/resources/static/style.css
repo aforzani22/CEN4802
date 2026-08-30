@@ -1,79 +1,83 @@
-* {
-    box-sizing: border-box;
-}
-
 body {
-    margin: 0;
     font-family: Arial, sans-serif;
-    background: #f4f4f4;
-    color: #222;
+    background-color: #f4f4f4;
+    margin: 0;
 }
 
 .container {
-    width: min(680px, 92%);
+    width: 600px;
+    max-width: 90%;
     margin: 60px auto;
-    padding: 28px;
-    background: white;
-    border: 1px solid #ddd;
-    border-radius: 10px;
+    background-color: white;
+    padding: 30px;
+    border-radius: 8px;
 }
 
 h1 {
-    margin-bottom: 6px;
+    margin-top: 0;
 }
 
-.subtitle {
-    margin-top: 0;
+.description {
     color: #555;
 }
 
-label {
-    display: block;
-    margin-bottom: 8px;
-    font-weight: bold;
-}
-
-.form-row {
+form {
     display: flex;
-    gap: 8px;
+    gap: 10px;
+    margin-bottom: 25px;
 }
 
 input {
     flex: 1;
     padding: 10px;
-    font-size: 1rem;
+    font-size: 16px;
 }
 
 button {
     padding: 10px 14px;
+    border: none;
+    border-radius: 4px;
     cursor: pointer;
 }
 
-#message {
-    min-height: 20px;
+form button {
+    background-color: #333;
+    color: white;
 }
 
-#task-list {
+ul {
     list-style: none;
     padding: 0;
 }
 
-#task-list li {
+li {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: 12px;
-    margin-bottom: 8px;
+
     padding: 12px;
-    border: 1px solid #ddd;
-    border-radius: 6px;
+    margin-bottom: 10px;
+
+    background-color: #eeeeee;
+
+    border-radius: 5px;
+}
+
+.buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.complete-button {
+    background-color: #dddddd;
 }
 
 .delete-button {
-    padding: 6px 10px;
+    background-color: #333;
+    color: white;
 }
 
-.empty {
-    color: #666;
-    font-style: italic;
+.completed span {
+    text-decoration: line-through;
+    color: #777;
 }
