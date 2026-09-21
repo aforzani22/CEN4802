@@ -1,6 +1,6 @@
 body {
     font-family: Arial, sans-serif;
-    background-color: #f4f4f4;
+    background-color: #437ecd;
     margin: 0;
 }
 
@@ -8,7 +8,7 @@ body {
     width: 600px;
     max-width: 90%;
     margin: 60px auto;
-    background-color: white;
+    background-color: #437ecd;
     padding: 30px;
     border-radius: 8px;
 }
@@ -69,12 +69,12 @@ li {
 }
 
 .complete-button {
-    background-color: #dddddd;
+    background-color: #5bb34d;
 }
 
 .delete-button {
     background-color: #333;
-    color: white;
+    color: #ff0045;
 }
 
 .completed span {
