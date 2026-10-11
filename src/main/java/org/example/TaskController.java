@@ -64,7 +64,7 @@ public class TaskController {
 
         int previousCount = tasks.size();
 
-        tasks.removeIf(task -> !task.isCompleted());
+        tasks.removeIf(Task::isCompleted);
 
         return previousCount - tasks.size();
     }
