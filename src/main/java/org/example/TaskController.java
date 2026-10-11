@@ -59,6 +59,16 @@ public class TaskController {
         return task;
     }
 
+    @DeleteMapping("/completed")
+    public int clearCompletedTasks() {
+
+        int previousCount = tasks.size();
+
+        tasks.removeIf(Task::isCompleted);
+
+        return previousCount - tasks.size();
+    }
+
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteTask(@PathVariable long id) {

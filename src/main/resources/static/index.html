@@ -36,8 +36,14 @@
     </form>
 
     <ul id="taskList"></ul>
+    <button id="clearCompletedButton"
+            type="button"
+            class="clear-completed-button">
+        Clear Completed
+    </button>
 
 </main>
+
 
 <script>
 
@@ -49,6 +55,21 @@
 
     const taskList =
         document.getElementById("taskList");
+
+    document.getElementById("clearCompletedButton")
+        .addEventListener("click", async () => {
+
+            const response = await fetch("/api/tasks/completed", {
+                method: "DELETE"
+            });
+
+            if (!response.ok) {
+                alert("Unable to clear completed tasks.");
+                return;
+            }
+
+            await loadTasks();
+        });
 
 
     async function loadTasks() {

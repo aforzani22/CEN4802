@@ -29,6 +29,28 @@ class TaskControllerTest {
     }
 
     @Test
+    void clearCompletedRemovesOnlyCompletedTasks() {
+        TaskController controller = new TaskController();
+
+        Task task1 = controller.createTask(
+                new TaskController.TaskRequest("Homework")
+        );
+
+        Task task2 = controller.createTask(
+                new TaskController.TaskRequest("Docker")
+        );
+
+        controller.toggleTask(task1.getId());
+
+        int removed = controller.clearCompletedTasks();
+
+        assertEquals(1, removed);
+        assertEquals(1, controller.getTasks().size());
+        assertEquals(task2.getId(),
+                controller.getTasks().get(0).getId());
+    }
+
+    @Test
     void toggleTaskMarksItCompleted() {
         TaskController controller = new TaskController();
 

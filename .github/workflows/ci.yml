@@ -33,3 +33,17 @@ jobs:
           name: cen4802-jar
           path: target/*.jar
           if-no-files-found: error
+
+
+      - name: Build Docker image
+        run: docker build -t cen4802:midterm .
+
+      - name: Export Docker image
+        run: docker save cen4802:midterm | gzip > cen4802-image.tar.gz
+
+      - name: Upload Docker image
+        uses: actions/upload-artifact@v7
+        with:
+          name: cen4802-docker-image
+          path: cen4802-image.tar.gz
+          if-no-files-found: error

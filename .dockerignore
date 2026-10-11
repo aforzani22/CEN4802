@@ -1,0 +1,10 @@
+.git
+.github
+.idea
+src
+*.iml
+*.zip
+target/classes
+target/test-classes
+target/surefire-reports
+target/*.jar.original

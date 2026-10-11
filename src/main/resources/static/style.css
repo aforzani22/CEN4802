@@ -81,3 +81,13 @@ li {
     text-decoration: line-through;
     color: #777;
 }
+
+.clear-completed-button {
+    background-color: #2563eb;
+    color: white;
+    margin-bottom: 15px;
+}
+
+.clear-completed-button:hover {
+    background-color: #1d4ed8;
+}
